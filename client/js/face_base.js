@@ -37,7 +37,8 @@ goButton.addEventListener( 'click', go, false )
 goButton.style.display = 'inherit'
 
 // intitialize sockets !CHANGE!-env dep
-var socket = io.connect( 'https://face-app-jlouis.c9.io' )
+//var socket = io.connect( 'https://face-app-jlouis.c9.io' )
+var socket = io.connect( 'http://faceapp-jlouis.rhcloud.com' )
 
 // Go!
 init()
