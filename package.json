@@ -7,15 +7,14 @@
   "author": "j louis",
   "dependencies": {
     "async": "^0.2.10",
-    "express": "^3.2.6",
-    "socket.io": "^0.9.17",
     "buffers": "0.1.1",
+    "express": "^3.2.6",
+    "node-pre-gyp": "^0.6.4",
     "opencv": "^3.0.0",
-    "node-pre-gyp": "^0.6.4"
+    "pkg-config": "^1.1.0",
+    "socket.io": "^0.9.17"
   },
   "scripts": {
     "start": "node server.js"
-  },
-  
-  "main": "server.js"
+  }
 }
