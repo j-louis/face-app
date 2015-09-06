@@ -38,7 +38,15 @@ goButton.style.display = 'inherit'
 
 // intitialize sockets !CHANGE!-env dep
 //var socket = io.connect( 'https://face-app-jlouis.c9.io' )
-var socket = io.connect( 'http://faceapp-jlouis.rhcloud.com' )
+var port = 8000,
+    protocol = 'ws://',
+    isSecure = false;
+if (location.protocol === 'https:') {
+   port = 8443;
+   protocol = 'wss://';
+   isSecure = true;
+}
+var socket = io.connect( protocol + 'faceapp-jlouis.rhcloud.com:' + port, {secure: isSecure} )
 
 // Go!
 init()
