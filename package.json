@@ -9,7 +9,8 @@
     "async": "^0.2.10",
     "express": "^3.2.6",
     "socket.io": "^0.9.17",
-    "buffers": "0.1.1"
+    "buffers": "0.1.1",
+    "opencv": "3.0.0"
   },
   "scripts": {
     "start": "node server.js"
