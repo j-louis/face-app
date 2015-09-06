@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimal-ui">
+
+  <title>Face App.</title>
+  <meta name="author" content="joshua alexander">
+
+  <meta name="description" content="">
+
+  <link rel="stylesheet" href="css/style.css">
+
+</head>
+
+<body>
+
+  <div class="content">
+    
+    <video id="mainVideo" autoplay></video>
+    <div class="controlsContainer">
+      <button class="baseControl textButton" id="goButton">Go!</button>
+      <button class="baseControl asciiButton" id="cycleStreamSourceButton">&#8644;</button>
+      <button class="baseControl textButton" id="chatRouletteButton">0</button>
+    </div>
+    <canvas id="overlayCanvas" class="overlayCanvas"></canvas>
+    <canvas id="snapshotCanvas" class="shotCanvas"></canvas>
+    <canvas id="displayCanvas" class="shotCanvas"></canvas>
+    <div id="debugContainer" class="debugOverlayContainer">
+      <div id="debugContents" class="debugOverlayContents"></div>
+    </div>
+    
+  </div>
+  
+  <script src="js/jquery.min.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
+    <script src="js/face_base.js"></script>
+  
+  <script src="js/punk_counter.js"></script>
+</body>
+
+</html>
