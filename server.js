@@ -1,5 +1,4 @@
 var http = require('http')
-var cv = require( 'opencv' )
 var io = require('socket.io')
 var express = require('express')
 
