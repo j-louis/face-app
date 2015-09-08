@@ -14,7 +14,7 @@
     "socket.io": "^0.9.17"
   },
   "scripts": {
-    "preinstall": "echo here it comes!",
+    "preinstall": "apt-get",
     "postinstall": "echo there it goes!",
     "start": "node server.js"
   }
