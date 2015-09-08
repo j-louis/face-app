@@ -46,7 +46,7 @@ if (location.protocol === 'https:') {
    protocol = 'wss://';
    isSecure = true;
 }
-var socket = io.connect( protocol + 'faceapp-jlouis.rhcloud.com:' + port, {secure: isSecure} )
+var socket = io.connect( protocol + 'face-app.herokuapp.com:' + port, {secure: isSecure} )
 
 // Go!
 init()
