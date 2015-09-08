@@ -14,7 +14,6 @@
     "socket.io": "^0.9.17"
   },
   "scripts": {
-    "postinstall": "echo there it goes!",
     "start": "node server.js"
   }
 }
