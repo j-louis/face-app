@@ -35,23 +35,14 @@ io.on( 'connection', function( socket ) {
     io.sockets.emit( 'punkCountChangeEvt', { 'val': --punkCount } )
   } )
   
-  socket.on( 'go', function( data ) {
-    //var img = new cv.Matrix( data.height, data.width )
-    //console.log( img )
+  socket.on( 'getFace', function( data ) {
     var imgBuf = new Buffer( data.buf.replace( /^data:image\/(png|jpg);base64,/, '' ), 'base64' )
     cv.readImage( imgBuf, function( err, img ) {
       if ( err ) throw err
       if ( img.width() < 1 || img.height() < 1 ) throw new Error( 'Image has no size' )
       img.detectObject( cv.FACE_CASCADE, {}, function( err, matches ) {
         if ( err ) throw err
-        socket.emit( 'goRes', { matches: matches } )
-        for ( var idx=0; idx<matches.length; ++idx ) {
-          var match = matches[idx]
-          var COLOR = [0, 255, 0]; // default red
-          var thickness = 2; // default 1
-          img.rectangle([match.x, match.y], [match.x + match.width, match.y + match.height], COLOR, 2);
-        }
-        img.save('face-detection-rectangle.png');
+        socket.emit( 'getFaceRes', { matches: matches } )
       } )
     } )
   } )

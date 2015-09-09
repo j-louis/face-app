@@ -5,3 +5,4 @@ https://github.com/salsify/heroku-buildpack-multi.git
 https://github.com/heroku/heroku-buildpack-nodejs.git
 https://github.com/hdachev/heroku-buildpack-opencv.git
 https://github.com/a2ikm/heroku-buildpack-libjpeg62.git
+https://github.com/matteotiziano/heroku-buildpack-tesseract.git

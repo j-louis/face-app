@@ -32,13 +32,20 @@ video.addEventListener( 'click', displayCanvasSnapshot(), false )
 var cycleSourceButton = document.getElementById( 'cycleStreamSourceButton' )
 cycleSourceButton.addEventListener( 'click', cycleStreamSource, false )
 
-var goButton = document.getElementById( 'goButton' )
-goButton.addEventListener( 'click', go, false )
-goButton.style.display = 'inherit'
+var getFaceButton = document.getElementById( 'getFaceButton' )
+var startFaceButton = document.getElementById( 'startFaceButton' )
+var stopFaceButton = document.getElementById( 'stopFaceButton' )
+getFaceButton.addEventListener( 'click', getFace, false )
+startFaceButton.addEventListener( 'click', startFace, false )
+stopFaceButton.addEventListener( 'click', startFace, false )
+getFaceButton.style.display = 'inherit'
+startFaceButton.style.display = 'inherit'
+stopFaceButton.style.display = 'inherit'
 
 // intitialize sockets !CHANGE!-env dep
 //var socket = io.connect( 'https://face-app-jlouis.c9.io' )
-var socket = io.connect( 'face-app.herokuapp.com' )
+//var socket = io.connect( 'face-app.herokuapp.com' )
+var socket = io.connect( window.location.href )
 
 // Go!
 init()
@@ -52,21 +59,31 @@ function init() {
   debugNow( 'Initializing . . .' )
 }
 
-function go() {
+function getFace() {
   var imgBuffer = snapchatMinusTheChat( snapshotCanvas, snapShotCtx )
-  socket.emit( 'go', { width: snapshotCanvas.width, height: snapshotCanvas.height, buf: imgBuffer } )
+  socket.emit( 'getFace', { width: snapshotCanvas.width, height: snapshotCanvas.height, buf: imgBuffer } )
 }
-var matchesH = []
-socket.on( 'goRes', function( data ) {
+
+var startFaceFlag = false
+function startFace() {
+  startFaceFlag = true
+  getFace()
+}
+
+function stopFace() {
+  startFaceFlag = false
   overlayCtx.clearRect( overlayConvBase[0], overlayConvBase[1], overlayConvSize[0], overlayConvSize[1] )
-  matchesH.length = 0
+}
+
+socket.on( 'getFaceRes', function( data ) {
+  overlayCtx.clearRect( overlayConvBase[0], overlayConvBase[1], overlayConvSize[0], overlayConvSize[1] )
   for ( var idx=0; idx<data.matches.length; ++idx ) {
-    matchesH.push( drawRect( 
+    drawRect( 
       data.matches[idx].x, data.matches[idx].y, 
-      data.matches[idx].width, data.matches[idx].height ) )
+      data.matches[idx].width, data.matches[idx].height )
     debugNow( data.matches[idx] )
   }
-  go()
+  if ( startFaceFlag ) getFace()
 } )
 
 function resizeOverlayCanvas() {

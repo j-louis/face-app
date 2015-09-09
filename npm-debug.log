@@ -1,61 +1,37 @@
 0 info it worked if it ends with ok
 1 verbose cli [ '/home/ubuntu/.nvm/versions/node/v0.12.7/bin/node',
 1 verbose cli   '/home/ubuntu/.nvm/versions/node/v0.12.7/bin/npm',
-1 verbose cli   'run',
-1 verbose cli   'apt-get',
-1 verbose cli   '-y',
-1 verbose cli   'install',
-1 verbose cli   'libopencv-dev',
-1 verbose cli   'build-essential',
-1 verbose cli   'cmake',
-1 verbose cli   'git',
-1 verbose cli   'libgtk2.0-dev',
-1 verbose cli   'pkg-config',
-1 verbose cli   'python-dev',
-1 verbose cli   'python-numpy',
-1 verbose cli   'libdc1394-22',
-1 verbose cli   'libdc1394-22-dev',
-1 verbose cli   'libjpeg-dev',
-1 verbose cli   'libpng12-dev',
-1 verbose cli   'libtiff4-dev',
-1 verbose cli   'libjasper-dev',
-1 verbose cli   'libavcodec-dev',
-1 verbose cli   'libavformat-dev',
-1 verbose cli   'libswscale-dev',
-1 verbose cli   'libxine-dev',
-1 verbose cli   'libgstreamer0.10-dev',
-1 verbose cli   'libgstreamer-plugins-base0.10-dev',
-1 verbose cli   'libv4l-dev',
-1 verbose cli   'libtbb-dev',
-1 verbose cli   'libqt4-dev',
-1 verbose cli   'libmp3lame-dev',
-1 verbose cli   'libopencore-amrnb-dev',
-1 verbose cli   'libopencore-amrwb-dev',
-1 verbose cli   'libtheora-dev',
-1 verbose cli   'libvorbis-dev',
-1 verbose cli   'libxvidcore-dev',
-1 verbose cli   'x264',
-1 verbose cli   'v4l-utils',
-1 verbose cli   'unzip' ]
+1 verbose cli   'start' ]
 2 info using npm@2.11.3
 3 info using node@v0.12.7
-4 verbose stack Error: missing script: apt-get
-4 verbose stack     at run (/home/ubuntu/.nvm/versions/node/v0.12.7/lib/node_modules/npm/lib/run-script.js:142:19)
-4 verbose stack     at /home/ubuntu/.nvm/versions/node/v0.12.7/lib/node_modules/npm/lib/run-script.js:58:5
-4 verbose stack     at /home/ubuntu/.nvm/versions/node/v0.12.7/lib/node_modules/npm/node_modules/read-package-json/read-json.js:345:5
-4 verbose stack     at checkBinReferences_ (/home/ubuntu/.nvm/versions/node/v0.12.7/lib/node_modules/npm/node_modules/read-package-json/read-json.js:309:45)
-4 verbose stack     at final (/home/ubuntu/.nvm/versions/node/v0.12.7/lib/node_modules/npm/node_modules/read-package-json/read-json.js:343:3)
-4 verbose stack     at then (/home/ubuntu/.nvm/versions/node/v0.12.7/lib/node_modules/npm/node_modules/read-package-json/read-json.js:113:5)
-4 verbose stack     at /home/ubuntu/.nvm/versions/node/v0.12.7/lib/node_modules/npm/node_modules/read-package-json/read-json.js:232:12
-4 verbose stack     at evalmachine.<anonymous>:334:14
-4 verbose stack     at /home/ubuntu/.nvm/versions/node/v0.12.7/lib/node_modules/npm/node_modules/graceful-fs/graceful-fs.js:102:5
-4 verbose stack     at FSReqWrap.oncomplete (evalmachine.<anonymous>:95:15)
-5 verbose cwd /home/ubuntu/workspace
-6 error Linux 3.14.13-c9
-7 error argv "/home/ubuntu/.nvm/versions/node/v0.12.7/bin/node" "/home/ubuntu/.nvm/versions/node/v0.12.7/bin/npm" "run" "apt-get" "-y" "install" "libopencv-dev" "build-essential" "cmake" "git" "libgtk2.0-dev" "pkg-config" "python-dev" "python-numpy" "libdc1394-22" "libdc1394-22-dev" "libjpeg-dev" "libpng12-dev" "libtiff4-dev" "libjasper-dev" "libavcodec-dev" "libavformat-dev" "libswscale-dev" "libxine-dev" "libgstreamer0.10-dev" "libgstreamer-plugins-base0.10-dev" "libv4l-dev" "libtbb-dev" "libqt4-dev" "libmp3lame-dev" "libopencore-amrnb-dev" "libopencore-amrwb-dev" "libtheora-dev" "libvorbis-dev" "libxvidcore-dev" "x264" "v4l-utils" "unzip"
-8 error node v0.12.7
-9 error npm  v2.11.3
-10 error missing script: apt-get
-11 error If you need help, you may report this error at:
-11 error     <https://github.com/npm/npm/issues>
-12 verbose exit [ 1, true ]
+4 verbose run-script [ 'prestart', 'start', 'poststart' ]
+5 info prestart face-app@0.0.0
+6 info start face-app@0.0.0
+7 verbose unsafe-perm in lifecycle true
+8 info face-app@0.0.0 Failed to exec start script
+9 verbose stack Error: face-app@0.0.0 start: `node server.js`
+9 verbose stack Exit status 1
+9 verbose stack     at EventEmitter.<anonymous> (/home/ubuntu/.nvm/versions/node/v0.12.7/lib/node_modules/npm/lib/utils/lifecycle.js:213:16)
+9 verbose stack     at EventEmitter.emit (events.js:110:17)
+9 verbose stack     at ChildProcess.<anonymous> (/home/ubuntu/.nvm/versions/node/v0.12.7/lib/node_modules/npm/lib/utils/spawn.js:24:14)
+9 verbose stack     at ChildProcess.emit (events.js:110:17)
+9 verbose stack     at maybeClose (child_process.js:1015:16)
+9 verbose stack     at Process.ChildProcess._handle.onexit (child_process.js:1087:5)
+10 verbose pkgid face-app@0.0.0
+11 verbose cwd /home/ubuntu/workspace
+12 error Linux 3.14.13-c9
+13 error argv "/home/ubuntu/.nvm/versions/node/v0.12.7/bin/node" "/home/ubuntu/.nvm/versions/node/v0.12.7/bin/npm" "start"
+14 error node v0.12.7
+15 error npm  v2.11.3
+16 error code ELIFECYCLE
+17 error face-app@0.0.0 start: `node server.js`
+17 error Exit status 1
+18 error Failed at the face-app@0.0.0 start script 'node server.js'.
+18 error This is most likely a problem with the face-app package,
+18 error not with npm itself.
+18 error Tell the author that this fails on your system:
+18 error     node server.js
+18 error You can get their info via:
+18 error     npm owner ls face-app
+18 error There is likely additional logging output above.
+19 verbose exit [ 1, true ]
