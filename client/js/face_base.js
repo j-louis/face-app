@@ -33,14 +33,11 @@ var cycleSourceButton = document.getElementById( 'cycleStreamSourceButton' )
 cycleSourceButton.addEventListener( 'click', cycleStreamSource, false )
 
 var getFaceButton = document.getElementById( 'getFaceButton' )
-var startFaceButton = document.getElementById( 'startFaceButton' )
-var stopFaceButton = document.getElementById( 'stopFaceButton' )
+var toggleFaceButton = document.getElementById( 'toggleFaceButton' )
 getFaceButton.addEventListener( 'click', getFace, false )
-startFaceButton.addEventListener( 'click', startFace, false )
-stopFaceButton.addEventListener( 'click', startFace, false )
+toggleFaceButton.addEventListener( 'click', toggleFace, false )
 getFaceButton.style.display = 'inherit'
-startFaceButton.style.display = 'inherit'
-stopFaceButton.style.display = 'inherit'
+toggleFaceButton.style.display = 'inherit'
 
 // intitialize sockets !CHANGE!-env dep
 //var socket = io.connect( 'https://face-app-jlouis.c9.io' )
@@ -64,15 +61,35 @@ function getFace() {
   socket.emit( 'getFace', { width: snapshotCanvas.width, height: snapshotCanvas.height, buf: imgBuffer } )
 }
 
-var startFaceFlag = false
-function startFace() {
-  startFaceFlag = true
-  getFace()
+var toggleFaceFlag = false
+faceFpsUpdate.faceFpsFrames = 0
+faceFpsUpdate.faceFpsTick = -9e10
+function faceFpsUpdate() {
+  this.faceFps = faceFpsUpdate.faceFpsFrames / ( performance.now() - this.faceFpsTick ) * 1000
+  toggleFaceButton.innerHTML = this.faceFps.toPrecision( 3 )
+  
+  // reset fps variables
+  faceFpsUpdate.faceFpsFrames = 0
+  this.faceFpsTick = performance.now()
 }
 
-function stopFace() {
-  startFaceFlag = false
-  overlayCtx.clearRect( overlayConvBase[0], overlayConvBase[1], overlayConvSize[0], overlayConvSize[1] )
+function toggleFace() {
+  // toggle
+  toggleFaceFlag = !toggleFaceFlag
+  
+  if ( toggleFaceFlag ) {
+    // update fps
+    this.fpsLis = setInterval( faceFpsUpdate, 1000 )
+    
+    // run procedure
+    getFace()
+  } else {
+    // clear any drawings
+    overlayCtx.clearRect( overlayConvBase[0], overlayConvBase[1], overlayConvSize[0], overlayConvSize[1] )
+    
+    // stop fps
+    clearInterval( this.fpsLis )
+  }
 }
 
 socket.on( 'getFaceRes', function( data ) {
@@ -83,7 +100,12 @@ socket.on( 'getFaceRes', function( data ) {
       data.matches[idx].width, data.matches[idx].height )
     debugNow( data.matches[idx] )
   }
-  if ( startFaceFlag ) getFace()
+  if ( toggleFaceFlag ) {
+    setTimeout( getFace, 10 )
+    faceFpsUpdate.faceFpsFrames++
+  } else {
+    overlayCtx.clearRect( overlayConvBase[0], overlayConvBase[1], overlayConvSize[0], overlayConvSize[1] )
+  }
 } )
 
 function resizeOverlayCanvas() {
