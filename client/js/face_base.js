@@ -66,7 +66,7 @@ faceFpsUpdate.faceFpsFrames = 0
 faceFpsUpdate.faceFpsTick = -9e10
 function faceFpsUpdate() {
   this.faceFps = faceFpsUpdate.faceFpsFrames / ( performance.now() - this.faceFpsTick ) * 1000
-  toggleFaceButton.innerHTML = this.faceFps.toPrecision( 3 )
+  toggleFaceButton.innerHTML = this.faceFps.toPrecision( 3 ).toString() + ' fps'
   
   // reset fps variables
   faceFpsUpdate.faceFpsFrames = 0
@@ -82,7 +82,8 @@ function toggleFace() {
     this.fpsLis = setInterval( faceFpsUpdate, 1000 )
     
     // run procedure
-    getFace()
+    this.faceLis = setInterval( getFace, 10 )
+    //getFace()
   } else {
     // clear any drawings
     overlayCtx.clearRect( overlayConvBase[0], overlayConvBase[1], overlayConvSize[0], overlayConvSize[1] )
@@ -101,7 +102,7 @@ socket.on( 'getFaceRes', function( data ) {
     debugNow( data.matches[idx] )
   }
   if ( toggleFaceFlag ) {
-    setTimeout( getFace, 10 )
+    //setTimeout( getFace, 10 )
     faceFpsUpdate.faceFpsFrames++
   } else {
     overlayCtx.clearRect( overlayConvBase[0], overlayConvBase[1], overlayConvSize[0], overlayConvSize[1] )
