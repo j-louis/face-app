@@ -36,7 +36,7 @@ io.on( 'connection', function( socket ) {
   } )
   
   socket.on( 'getFace', function( data ) {
-    var imgBuf = new Buffer( data.buf.replace( /^data:image\/(png|jpg);base64,/, '' ), 'base64' )
+    /*var imgBuf = new Buffer( data.buf.replace( /^data:image\/(png|jpg);base64,/, '' ), 'base64' )
     cv.readImage( imgBuf, function( err, img ) {
       if ( err ) throw err
       if ( img.width() < 1 || img.height() < 1 ) throw new Error( 'Image has no size' )
@@ -44,7 +44,7 @@ io.on( 'connection', function( socket ) {
         if ( err ) throw err
         socket.emit( 'getFaceRes', { matches: matches } )
       } )
-    } )
+    } )*/
   } )
   
 } )
