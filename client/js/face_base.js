@@ -82,8 +82,8 @@ function toggleFace() {
     this.fpsLis = setInterval( faceFpsUpdate, 1000 )
     
     // run procedure
-    this.faceLis = setInterval( getFace, 10 )
-    //getFace()
+    this.faceLis = setInterval( getFace, 100 )
+    getFace()
   } else {
     // clear any drawings
     overlayCtx.clearRect( overlayConvBase[0], overlayConvBase[1], overlayConvSize[0], overlayConvSize[1] )
@@ -94,18 +94,17 @@ function toggleFace() {
 }
 
 socket.on( 'getFaceRes', function( data ) {
-  overlayCtx.clearRect( overlayConvBase[0], overlayConvBase[1], overlayConvSize[0], overlayConvSize[1] )
+  /*overlayCtx.clearRect( overlayConvBase[0], overlayConvBase[1], overlayConvSize[0], overlayConvSize[1] )
   for ( var idx=0; idx<data.matches.length; ++idx ) {
     drawRect( 
       data.matches[idx].x, data.matches[idx].y, 
       data.matches[idx].width, data.matches[idx].height )
     debugNow( data.matches[idx] )
   }
+  */
   if ( toggleFaceFlag ) {
-    //setTimeout( getFace, 10 )
+    //getFace()
     faceFpsUpdate.faceFpsFrames++
-  } else {
-    overlayCtx.clearRect( overlayConvBase[0], overlayConvBase[1], overlayConvSize[0], overlayConvSize[1] )
   }
 } )
 

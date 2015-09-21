@@ -45,6 +45,7 @@ io.on( 'connection', function( socket ) {
         socket.emit( 'getFaceRes', { matches: matches } )
       } )
     } )*/
+    socket.emit( 'getFaceRes', { matches: [{x: 132, y: 106, width: 113, height: 113}] } )
   } )
   
 } )
