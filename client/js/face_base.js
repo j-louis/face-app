@@ -82,7 +82,7 @@ function toggleFace() {
     this.fpsLis = setInterval( faceFpsUpdate, 1000 )
     
     // run procedure
-    this.faceLis = setInterval( getFace, 100 )
+    this.faceLis = setInterval( getFace, 10 )
     getFace()
   } else {
     // clear any drawings

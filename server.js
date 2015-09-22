@@ -1,6 +1,6 @@
-var http = require('http')
+var http = require( 'http' )
 var cv = require( 'opencv' )
-var io = require('socket.io')
+var io = require( 'socket.io' )
 var express = require('express')
 
 // define address and port
@@ -18,7 +18,11 @@ app.get('/', function(req, res){
 
 // create a simple http server
 var server = http.createServer( app )
-var io = io.listen( server )
+var io = io.listen( server, {
+  'transports': [ 'xhr-polling' ],
+  'polling duration': 10,
+} )
+
 
 // keep track of the total number of users we have accessing our app
 var punkCount = 0
@@ -53,7 +57,7 @@ io.on( 'connection', function( socket ) {
 // and finially run our server at given address (and port)
 server.listen( port, ip, function() {
   console.log('listening on port ' + port + ' at ' + ip );
-});
+} )
 
 /*
 var server = http.createServer()
