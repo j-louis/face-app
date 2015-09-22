@@ -20,7 +20,7 @@ app.get('/', function(req, res){
 var server = http.createServer( app )
 var io = io.listen( server, {
   'transports': [ 'xhr-polling' ],
-  'polling duration': 10,
+  'polling duration': 1000,
 } )
 
 
