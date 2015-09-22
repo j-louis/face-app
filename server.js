@@ -19,8 +19,7 @@ app.get('/', function(req, res){
 // create a simple http server
 var server = http.createServer( app )
 var io = io.listen( server, {
-  'transports': [ 'xhr-polling' ],
-  'polling duration': 1000,
+  'transports': [ 'websocket', 'xhr-polling', 'jsonp-polling' ]
 } )
 
 
@@ -40,7 +39,7 @@ io.on( 'connection', function( socket ) {
   } )
   
   socket.on( 'getFace', function( data ) {
-    /*var imgBuf = new Buffer( data.buf.replace( /^data:image\/(png|jpg);base64,/, '' ), 'base64' )
+    var imgBuf = new Buffer( data.buf.replace( /^data:image\/(png|jpg);base64,/, '' ), 'base64' )
     cv.readImage( imgBuf, function( err, img ) {
       if ( err ) throw err
       if ( img.width() < 1 || img.height() < 1 ) throw new Error( 'Image has no size' )
@@ -48,8 +47,8 @@ io.on( 'connection', function( socket ) {
         if ( err ) throw err
         socket.emit( 'getFaceRes', { matches: matches } )
       } )
-    } )*/
-    socket.emit( 'getFaceRes', { matches: [{x: 132, y: 106, width: 113, height: 113}] } )
+    } )
+    //socket.emit( 'getFaceRes', { matches: [{x: 132, y: 106, width: 113, height: 113}] } )
   } )
   
 } )

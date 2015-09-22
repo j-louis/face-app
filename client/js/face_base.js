@@ -94,13 +94,12 @@ function toggleFace() {
 }
 
 socket.on( 'getFaceRes', function( data ) {
-  /*overlayCtx.clearRect( overlayConvBase[0], overlayConvBase[1], overlayConvSize[0], overlayConvSize[1] )
+  overlayCtx.clearRect( overlayConvBase[0], overlayConvBase[1], overlayConvSize[0], overlayConvSize[1] )
   for ( var idx=0; idx<data.matches.length; ++idx ) {
     drawRect( 
       data.matches[idx].x, data.matches[idx].y, 
       data.matches[idx].width, data.matches[idx].height )
   }
-  */
   debugNow( data.matches )
   if ( toggleFaceFlag ) {
     getFace()
