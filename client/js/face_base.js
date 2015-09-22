@@ -82,7 +82,7 @@ function toggleFace() {
     this.fpsLis = setInterval( faceFpsUpdate, 1000 )
     
     // run procedure
-    this.faceLis = setInterval( getFace, 10 )
+    //this.faceLis = setInterval( getFace, 10 )
     getFace()
   } else {
     // clear any drawings
@@ -99,11 +99,11 @@ socket.on( 'getFaceRes', function( data ) {
     drawRect( 
       data.matches[idx].x, data.matches[idx].y, 
       data.matches[idx].width, data.matches[idx].height )
-    debugNow( data.matches[idx] )
   }
   */
+  debugNow( data.matches )
   if ( toggleFaceFlag ) {
-    //getFace()
+    getFace()
     faceFpsUpdate.faceFpsFrames++
   }
 } )
