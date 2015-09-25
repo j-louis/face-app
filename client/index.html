@@ -17,30 +17,16 @@
 </head>
 
 <body>
-
-  <div class="content">
+  
+  <div id="content">
     
-    <video id="mainVideo" autoplay></video>
-    <div class="controlsContainer">
-      <button class="baseControl textButton" id="getFaceButton">Get Face</button>
-      <button class="baseControl textButton" id="toggleFaceButton">Start Face</button>
-      <button class="baseControl asciiButton" id="cycleStreamSourceButton">&#8644;</button>
-      <button class="baseControl textButton" id="chatRouletteButton">0</button>
-    </div>
-    <canvas id="overlayCanvas" class="overlayCanvas"></canvas>
-    <canvas id="snapshotCanvas" class="shotCanvas"></canvas>
-    <canvas id="displayCanvas" class="shotCanvas"></canvas>
-    <div id="debugContainer" class="debugOverlayContainer">
-      <div id="debugContents" class="debugOverlayContents"></div>
-    </div>
+    <div class="curtain" id="loadingCurtain"></div>
     
   </div>
   
-  <script src="js/jquery.min.js"></script>
   <script src="/socket.io/socket.io.js"></script>
-    <script src="js/face_base.js"></script>
+  <script src="js/bundle.js"></script>
   
-  <script src="js/punk_counter.js"></script>
 </body>
 
 </html>

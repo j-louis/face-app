@@ -1,7 +1,11 @@
+// server.js
+
 var http = require( 'http' )
 var cv = require( 'opencv' )
 var io = require( 'socket.io' )
 var express = require('express')
+
+var punkCounter = require( './punkCounter.js' )
 
 // define address and port
 var ip = process.env.IP
@@ -18,25 +22,35 @@ app.get('/', function(req, res){
 
 // create a simple http server
 var server = http.createServer( app )
-var io = io.listen( server, {
-  'transports': [ 'websocket', 'xhr-polling', 'jsonp-polling' ]
-} )
+var io = io.listen( server )
 
-
-// keep track of the total number of users we have accessing our app
-var punkCount = 0
-
+// keep track of when we gain or lose a user (and let everyone know)
+punkCounter.init()
+  
 // define socket io connection events
-io.on( 'connection', function( socket ) {
+var nsp = io.of( '/nsp' )
+nsp.on( 'connection', function( socket ) {
+  // do all things we do when we connect...
   
-  // keep track of when we gain a user (and let everyone know)
-  io.sockets.emit( 'punkCountChangeEvt', { 'val': ++punkCount } )
-  
-  socket.on( 'disconnect', function() {
+  // not currently necessary but placeholder for future
+  if ( true ) {
     
-    // keep track when we lose a user (and let everyone know)
-    io.sockets.emit( 'punkCountChangeEvt', { 'val': --punkCount } )
-  } )
+    socket.join( 'basics' )
+    //console.log( io.nsps['/nsp'].adapter.rooms['basics'] )
+    
+    console.log( 'server has gained a connection.' )
+    
+    socket.on( 'disconnect', function() {
+      // do all things we do when we disconnect...
+      console.log( 'server has lost a connection.' )
+    } )
+    
+    punkCounter.newCon( nsp, socket )
+    
+  }
+
+    
+  
   
   socket.on( 'getFace', function( data ) {
     var imgBuf = new Buffer( data.buf.replace( /^data:image\/(png|jpg);base64,/, '' ), 'base64' )
@@ -55,7 +69,7 @@ io.on( 'connection', function( socket ) {
 
 // and finially run our server at given address (and port)
 server.listen( port, ip, function() {
-  console.log('listening on port ' + port + ' at ' + ip );
+  console.log( 'listening on port ' + port + ' at ' + ip )
 } )
 
 /*

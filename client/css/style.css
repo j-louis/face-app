@@ -1,106 +1,153 @@
 
 * { 
-    margin: 0; 
-    padding: 0;
+  margin: 0; 
+  padding: 0;
 }
 
-html, body, .content {
-    height: 100%;
-    width: 100%;
-    font-family: Garamond, Georgia, serif;
+html, body, #content {
+  height: 100%;
+  width: 100%;
+  font-family: Garamond, Georgia, serif;
 }
 
 body {
-    overflow: hidden;
+  overflow: hidden;
 }
 
-#mainVideo {
-    display: block;
-    width: 100%;
-    height: 100%;
-    background-color: rgba( 0, 0, 0, 0.95 );
-    z-index: 1;
+/* videoBase.js */
+.mainVideo {
+  display: block;
+  width: 100%;
+  height: 100%;
+  
+  z-index: 1;
 }
+
+.mainVideo, body, #content, .curtain {
+  background-color: rgba( 240, 234, 214, 1 );
+  /*background-color: rgba( 25, 255, 255, 1 );*/
+}
+
+
 
 .shotCanvas {
-    position: absolute;
-    pointer-events: none;
-    bottom: 15px;
-    left: 15px;
-    opacity: 0;
-    transition: opacity .5s ease-in-out;
-    -moz-transition: opacity .5s ease-in-out;
-    -webkit-transition: opacity .5s ease-in-out; 
-    z-index: 3;
+  position: absolute;
+  pointer-events: none;
+  bottom: 15px;
+  left: 15px;
+  opacity: 0;
+  transition: opacity .5s ease-in-out;
+  z-index: 3;
 }
 
 .overlayCanvas {
-    position: absolute;
-    bottom: 0px;
-    left: 0px;
-    pointer-events: none;
-    z-index: 2;
+  position: absolute;
+  bottom: 0px;
+  left: 0px;
+  pointer-events: none;
+  z-index: 2;
 }
 
-.debugOverlayContainer {
-    position: absolute;
-    max-width: 350px;
-    max-height: 250px;
-    width: 38%;
-    height: 28%;
-    bottom: 15px;
-    right: 15px;
-    padding: 10px;
-    opacity: 0;
-    pointer-events: none;
-    background-color: rgba( 255, 255, 255, 1 );
-    transition: opacity .5s ease-in-out;
-    -moz-transition: opacity .5s ease-in-out;
-    -webkit-transition: opacity .5s ease-in-out; 
-    z-index: 3;
+
+/* base.js */
+.curtain {
+  position: absolute;
+  left: 0px;
+  bottom: 0px;
+  width: 100%;
+  height: 100%;
+  visibility: visible;
+  opacity: 1;
+  transition: visibility 1s, opacity 1s ease-in-out;
+  pointer-events: none;
+  background-image: url(../img/ball.svg);
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: center; 
+  z-index: 50;
 }
 
-.debugOverlayContents {
-    width: 100%;
-    height: 100%;
-    padding: 0px;
+
+/* log.js */
+.logOverlayContainer {
+  position: absolute;
+  max-width: 350px;
+  max-height: 250px;
+  width: 38%;
+  height: 28%;
+  bottom: 15px;
+  right: 15px;
+  padding: 10px;
 }
 
-.debugOverlayElement {
-    width: 100%;
-    margin-bottom: 5px;
-    padding-left: 5px;
-    font-size: smaller;
-    border-left: thick double rgba( 0, 0, 0, 1 );
+.logOverlayContents {
+  width: 100%;
+  height: 100%;
+  padding: 0px;
+  overflow: hidden;
+  color: rgba( 255, 255, 255, 1 );
 }
 
+.logOverlayElement {
+  width: 100%;
+  margin-bottom: 5px;
+  padding-left: 5px;
+  font-size: smaller;
+  border-left: thick double rgba( 255, 255, 255, 1 );
+}
+
+
+/* controls.js */
 .controlsContainer {
-    display: inline-flex;
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    z-index: 3;
+  display: inline-flex;
+  position: absolute;
+  top: 15px;
+  right: 15px;
 }
 
-.baseControl {
-    display: none;
-    margin-left: 15px;
-    opacity: 0.5;
+.baseButton {
+  display: inherit;
+  cursor: pointer;
+  opacity: 1;
+  visibility: visible;
+  transition: visibility 0.5s, opacity 0.5s ease-in-out;
+}
+
+.baseButton:hover {
+  background-color: rgba( 132, 216, 160, 1 );
 }
 
 .asciiButton {
-    line-height: 70%;
-    padding: 5px;
-    padding-bottom: 9px;
-    font-size: xx-large;
-    color: rgba( 255, 255, 255, 1 );
-    background-color: rgba( 0, 0, 0, 1 );
+  line-height: 100%;
+  padding: 5px;
+  font-size: xx-large;
 }
 
 .textButton {
-    padding: 10px;
-    font-size: x-large;
-    color: rgba( 255, 255, 255, 1 );
-    background-color: rgba( 0, 0, 0, 1 );
+  padding: 10px;
+  font-size: x-large;
 }
 
+.logOverlayContainer, .controlsContainer {
+  color: rgba( 255, 255, 255, 1 );
+  background-color: rgba( 80, 200, 120, 1 );
+  border: 3px;
+  border-style: solid;
+  border-color: rgba( 255, 255, 255, 1 );
+  opacity: 0;
+  visibility: hidden;
+  transition: visibility 0.5s, opacity 0.5s ease-in-out;
+  z-index: 3;
+}
+
+
+
+/* general */
+.noSelect {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
