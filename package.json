@@ -19,6 +19,6 @@
     "socket.io": "^1.0.0"
   },
   "scripts": {
-    "start": "node server.js"
+    "start": "browserify client/js/main.js -o client/js/bundle.js; node server.js"
   }
 }

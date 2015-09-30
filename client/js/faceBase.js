@@ -29,7 +29,6 @@ exports.init = function () {
         data.matches[idx].width, data.matches[idx].height,
         snapshot.snapshotScaleFactor )
     }
-    //log.debug( data.matches )
     if ( toggleFaceControl.state ) {
       setTimeout( exports.getFace, 5 )
       if ( exports.fpsRunning ) fps.tick()
