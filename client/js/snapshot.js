@@ -11,7 +11,7 @@ exports.snapshotCanvas = null
 exports.snapshotCtx = null
 exports.displayCanvas = null
 exports.displayCtx = null
-exports.snapshotScaleFactor = 0.5
+exports.snapshotScaleFactor = 0.01
 var fadeCanvasIn = 3 // seconds
 var baseCanvasOpacity = 0.85
 
@@ -36,7 +36,12 @@ exports.snapchatMinusTheChat = function( canvas, ctx ) {
     return null
   }
 }
-
+/*
+self.canvas.toBuffer(function(err, buf){
+  if (err) throw err;
+  io.emit('frame', buf);
+});
+*/
 function resizeCanvas( canvas ) {
   canvas.width = video.mainVideo.videoWidth * exports.snapshotScaleFactor
   canvas.height = video.mainVideo.videoHeight * exports.snapshotScaleFactor

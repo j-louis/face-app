@@ -113,7 +113,7 @@ body {
   transition: visibility 0.5s, opacity 0.5s ease-in-out;
 }
 
-.baseButton:hover {
+.baseButton:hover, .toggle {
   background-color: rgba( 132, 216, 160, 1 );
 }
 

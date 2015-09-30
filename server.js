@@ -29,6 +29,8 @@ punkCounter.init()
   
 // define socket io connection events
 var nsp = io.of( '/nsp' )
+
+
 nsp.on( 'connection', function( socket ) {
   // do all things we do when we connect...
   
@@ -36,7 +38,7 @@ nsp.on( 'connection', function( socket ) {
   if ( true ) {
     
     socket.join( 'basics' )
-    //console.log( io.nsps['/nsp'].adapter.rooms['basics'] )
+    //transports: ['websocket']console.log( io.nsps['/nsp'].adapter.rooms['basics'] )
     
     console.log( 'server has gained a connection.' )
     
@@ -48,12 +50,9 @@ nsp.on( 'connection', function( socket ) {
     punkCounter.newCon( nsp, socket )
     
   }
-
-    
-  
   
   socket.on( 'getFace', function( data ) {
-    var imgBuf = new Buffer( data.buf.replace( /^data:image\/(png|jpg);base64,/, '' ), 'base64' )
+    /*var imgBuf = new Buffer( data.buf.replace( /^data:image\/(png|jpg);base64,/, '' ), 'base64' )
     cv.readImage( imgBuf, function( err, img ) {
       if ( err ) throw err
       if ( img.width() < 1 || img.height() < 1 ) throw new Error( 'Image has no size' )
@@ -61,8 +60,8 @@ nsp.on( 'connection', function( socket ) {
         if ( err ) throw err
         socket.emit( 'getFaceRes', { matches: matches } )
       } )
-    } )
-    //socket.emit( 'getFaceRes', { matches: [{x: 132, y: 106, width: 113, height: 113}] } )
+    } )*/
+    socket.emit( 'getFaceRes', { matches: [{x: 132, y: 106, width: 113, height: 113}] } )
   } )
   
 } )
@@ -101,3 +100,6 @@ server.listen(process.env.PORT || 3000, process.env.IP || "0.0.0.0", function(){
   console.log("Chat server listening at", addr.address + ":" + addr.port);
 });
 */
+
+
+

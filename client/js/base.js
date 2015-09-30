@@ -16,7 +16,7 @@ exports.init = function() {
   //var socket = io.connect( 'https://face-app-jlouis.c9.io' )
   //var socket = io.connect( 'face-app.herokuapp.com' )
   //exports.socket = io.connect( window.location.href + 'nsp' )
-  exports.socket = io.connect( '/nsp' ) /*global io*/
+  exports.socket = io.connect( '/nsp', {transports: ['websocket']} )
   //var socket = io.connect( 'https://face-app-jlouis.c9.io' )
   
   exports.socket.on( 'connect', function() {

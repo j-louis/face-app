@@ -49,9 +49,11 @@ exports.add = function( type, action, id, icon ) {
     controlDiv.addEventListener( 'click', function() {
       if ( controlDiv.state ) {
         action[1]()
+        controlDiv.classList.remove( 'toggle' )
         controlDiv.state = false
       } else {
         action[0]()
+        controlDiv.classList.add( 'toggle' )
         controlDiv.state = true
       }
     }, false )
