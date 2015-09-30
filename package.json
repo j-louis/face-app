@@ -5,17 +5,20 @@
   "main": "server.js",
   "repository": "https://github.com/j-louis/face-app",
   "author": "j louis",
+  "engines": {
+    "node": "0.12.7",
+    "npm": "2.11.x"
+  },
   "dependencies": {
     "async": "^0.2.10",
-    "buffers": "0.1.1",
+    "buffers": "^0.1.0",
     "express": "^3.2.6",
     "node-pre-gyp": "^0.6.4",
     "opencv": "3.0.0",
     "pkg-config": "^1.1.0",
-    "socket.io": "^1.0.0",
-    "ws": "^0.8.0"
+    "socket.io": "^1.0.0"
   },
   "scripts": {
-    "start": "browserify client/js/main.js -o client/js/bundle.js; node server.js"
+    "start": "node server.js"
   }
 }
