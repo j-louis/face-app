@@ -11,7 +11,8 @@ exports.snapshotCanvas = null
 exports.snapshotCtx = null
 exports.displayCanvas = null
 exports.displayCtx = null
-exports.snapshotScaleFactor = 0.01
+exports.maxPixels = 400*400 // determines the amount to scale stream by for snapshots
+exports.snapshotScaleFactor = null  // directly depends of pixels
 var fadeCanvasIn = 3 // seconds
 var baseCanvasOpacity = 0.85
 
@@ -26,44 +27,34 @@ exports.init = function () {
 }
 
 
-exports.snapchatMinusTheChat = function( canvas, ctx ) {
+exports.snapchatMinusTheChatDataUrl = function( canvas, ctx, imgType ) {
   if ( video.curStream ) {
+    // handle pre snaphot actions including placing video frame on canvas
+    //return ctx.getImageData( 0, 0, canvas.width, canvas.height ).data
     resizeCanvas( canvas )
     ctx.drawImage( video.mainVideo, 0, 0, canvas.width, canvas.height )
-    return canvas.toDataURL()
+    
+    // convert canvas data to data url and return
+    // imgType can be: image/png, image/jpeg, or image/webp
+    var dataUrl = canvas.toDataURL( imgType, 0.5 )
+    return dataUrl
   } else {
     log.debug( 'no stream to snapchat minus the chat to.' )
     return null
   }
 }
-/*
-self.canvas.toBuffer(function(err, buf){
-  if (err) throw err;
-  io.emit('frame', buf);
-});
-*/
+
 function resizeCanvas( canvas ) {
+  var videoPixels = video.mainVideo.videoWidth * video.mainVideo.videoHeight
+  exports.snapshotScaleFactor = exports.maxPixels / videoPixels
   canvas.width = video.mainVideo.videoWidth * exports.snapshotScaleFactor
   canvas.height = video.mainVideo.videoHeight * exports.snapshotScaleFactor
 }
 
-function saveSnapshotToServer( dataUrl ) {
-  base.debugNow( 'Saving snapshot as image to server' )
+function saveSnapshot( dataUrl ) {
   // send dataUrl to be written to server
-  $.ajax( {
-    type: "POST",
-    url: "php/save_img.php",
-    data: {
-      imgBase64: dataUrl
-    }
-  } ).done( function( result ) {
-    // php will either return false or the file location, handle accordingly
-    if ( result ) {
-      base.debugNow( 'Saved.' )
-    } else {
-      base.debugNow( 'Unable to save image to server' )
-    }
-  } ) 
+  log.debug( 'saving snapshot as image to server.' )
+  base.socket.emit( 'saveSnapshot', dataUrl )
 }
 
 function open( dataUrl ) {
@@ -72,7 +63,7 @@ function open( dataUrl ) {
 }
 
 function display() {
-  var imgBuffer = exports.snapchatMinusTheChat( exports.displayCanvas, exports.displayCtx )
+  var imgBuffer = exports.snapchatMinusTheChatDataUrl( exports.displayCanvas, exports.displayCtx, 'image/png' )
   if ( imgBuffer ) {
     base.debugNow(2)
     // re-apply normal div functionality/visibility
@@ -96,6 +87,7 @@ function display() {
     return null
   }
 }
+
 function createSnapshotEle( parentEle ) {
   
   // create canvas to spread use as a mediator to tranfer single images from 

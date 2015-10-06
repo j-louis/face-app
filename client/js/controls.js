@@ -72,7 +72,11 @@ exports.add = function( type, action, id, icon ) {
 
 exports.remove = function( id ) {
   
-  log.debug( 'remove control function not yet implemented' )
+  // remove from our stack
+  exports.controlsStack.splice( exports.controlsStack.indexOf( id ), 1 )
+ 
+  // remove from DOM
+  containerDiv.removeChild( id )
   
 }
 

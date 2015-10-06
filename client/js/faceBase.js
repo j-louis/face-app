@@ -44,15 +44,13 @@ exports.init = function () {
 exports.getFace = function() {
   
   // get image buffer
-  //var imgBuffer = snapshot.snapchatMinusTheChat( 
-  //  snapshot.snapshotCanvas, 
-  //  snapshot.snapshotCtx 
-  //  )
-  var imgBuffer = []
-  base.socket.emit( 'getFace', { 
-    width: snapshot.snapshotCanvas.width, 
-    height: snapshot.snapshotCanvas.height, 
-    buf: imgBuffer } )
+  var imgData = snapshot.snapchatMinusTheChatDataUrl( 
+    snapshot.snapshotCanvas, 
+    snapshot.snapshotCtx,
+    'image/jpeg' // image/png, image/jpeg, image/bmp, image/webp
+    )
+  //base.socket.emit( 'saveSnapshot', imgData )
+  base.socket.emit( 'getFace', imgData )
     
 }
 

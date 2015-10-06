@@ -49,26 +49,32 @@ exports.loadStreams = function() {
   var pc = new peerConnection( { iceServers: [] } )
 
   // find out what sources we have available and start stream with default
-  MediaStreamTrack.getSources( function( srcs ) { /*global MediaStreamTrack*/
+  window.MediaStreamTrack.getSources( function( srcs ) {
+    
     for ( var idx = 0; idx < srcs.length; ++idx ) {
       var src = srcs[idx]
-      if ( src.kind === 'video' ) videoStreams.push( src )
+      if ( src.kind == 'video' ) videoStreams.push( src )
     }
-    if ( videoStreams.length ) {
-      if ( videoStreams.length > 1 ) {
-        // special case if we found more than one usable stream
-        createCycleStreamControl()
-      } else if ( cycleStreamControl !== null ) {
-        // otherwise try to remove control if it exists
-        controls.remove( cycleStreamControl )
-        cycleStreamControl = null
-      }
-      setStream( videoStreams[0] )
-    } else {
+    
+    
+    if ( videoStreams.length == 0 ) {
       exports.curStream = null
       log.debug( 'no video streams found.' )
+      return
     }
+    
+    if ( videoStreams.length > 1 ) {
+      // special case if we found more than one usable stream
+      createCycleStreamControl()
+    } else if ( cycleStreamControl !== null ) {
+      // otherwise try to remove control if it exists
+      controls.remove( cycleStreamControl )
+      cycleStreamControl = null
+    }
+    setStream( videoStreams[0] )
+    
   } )
+  
 }
 
 function setStream( src ) {
@@ -97,7 +103,8 @@ function setStream( src ) {
     } }, function( stream ) {
     exports.mainVideo.src = window.URL.createObjectURL( stream )
     src.stream = stream
-    exports.mainVideo.play()
+    //exports.mainVideo.play()
+    exports.mainVideo.pause()
     log.debug( 'stream ' + src.id + ' is up.' )
   }, function ( err ) { log.debug( err ) } )
 }

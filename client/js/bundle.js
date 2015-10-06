@@ -153,7 +153,11 @@ exports.add = function( type, action, id, icon ) {
 
 exports.remove = function( id ) {
   
-  log.debug( 'remove control function not yet implemented' )
+  // remove from our stack
+  exports.controlsStack.splice( exports.controlsStack.indexOf( id ), 1 )
+ 
+  // remove from DOM
+  containerDiv.removeChild( id )
   
 }
 
@@ -242,15 +246,13 @@ exports.init = function () {
 exports.getFace = function() {
   
   // get image buffer
-  //var imgBuffer = snapshot.snapchatMinusTheChat( 
-  //  snapshot.snapshotCanvas, 
-  //  snapshot.snapshotCtx 
-  //  )
-  var imgBuffer = []
-  base.socket.emit( 'getFace', { 
-    width: snapshot.snapshotCanvas.width, 
-    height: snapshot.snapshotCanvas.height, 
-    buf: imgBuffer } )
+  var imgData = snapshot.snapchatMinusTheChatDataUrl( 
+    snapshot.snapshotCanvas, 
+    snapshot.snapshotCtx,
+    'image/jpeg' // image/png, image/jpeg, image/bmp, image/webp
+    )
+  //base.socket.emit( 'saveSnapshot', imgData )
+  base.socket.emit( 'getFace', imgData )
     
 }
 
@@ -293,7 +295,7 @@ var lis = null
 var ticks = 0
 var tic = null
 exports.fpss = null
-var updateEvery = 1 * 1000 // update fps counter every ***ms
+var updateEvery = 2 * 1000 // update fps counter every ***ms
 var fpsDisplayDiv = null
 
 
@@ -396,6 +398,9 @@ exports.debug = function( string ) {
   
   // it would be unfair to leave the old console out
   console.log( string )
+  //console.log( this.debug.caller.toString() )
+  //arguments.callee.caller.toString() // give source
+  
   
 }
 
@@ -523,7 +528,8 @@ exports.snapshotCanvas = null
 exports.snapshotCtx = null
 exports.displayCanvas = null
 exports.displayCtx = null
-exports.snapshotScaleFactor = 0.01
+exports.maxPixels = 400*400 // determines the amount to scale stream by for snapshots
+exports.snapshotScaleFactor = null  // directly depends of pixels
 var fadeCanvasIn = 3 // seconds
 var baseCanvasOpacity = 0.85
 
@@ -538,44 +544,34 @@ exports.init = function () {
 }
 
 
-exports.snapchatMinusTheChat = function( canvas, ctx ) {
+exports.snapchatMinusTheChatDataUrl = function( canvas, ctx, imgType ) {
   if ( video.curStream ) {
+    // handle pre snaphot actions including placing video frame on canvas
+    //return ctx.getImageData( 0, 0, canvas.width, canvas.height ).data
     resizeCanvas( canvas )
     ctx.drawImage( video.mainVideo, 0, 0, canvas.width, canvas.height )
-    return canvas.toDataURL()
+    
+    // convert canvas data to data url and return
+    // imgType can be: image/png, image/jpeg, or image/webp
+    var dataUrl = canvas.toDataURL( imgType, 0.5 )
+    return dataUrl
   } else {
     log.debug( 'no stream to snapchat minus the chat to.' )
     return null
   }
 }
-/*
-self.canvas.toBuffer(function(err, buf){
-  if (err) throw err;
-  io.emit('frame', buf);
-});
-*/
+
 function resizeCanvas( canvas ) {
+  var videoPixels = video.mainVideo.videoWidth * video.mainVideo.videoHeight
+  exports.snapshotScaleFactor = exports.maxPixels / videoPixels
   canvas.width = video.mainVideo.videoWidth * exports.snapshotScaleFactor
   canvas.height = video.mainVideo.videoHeight * exports.snapshotScaleFactor
 }
 
-function saveSnapshotToServer( dataUrl ) {
-  base.debugNow( 'Saving snapshot as image to server' )
+function saveSnapshot( dataUrl ) {
   // send dataUrl to be written to server
-  $.ajax( {
-    type: "POST",
-    url: "php/save_img.php",
-    data: {
-      imgBase64: dataUrl
-    }
-  } ).done( function( result ) {
-    // php will either return false or the file location, handle accordingly
-    if ( result ) {
-      base.debugNow( 'Saved.' )
-    } else {
-      base.debugNow( 'Unable to save image to server' )
-    }
-  } ) 
+  log.debug( 'saving snapshot as image to server.' )
+  base.socket.emit( 'saveSnapshot', dataUrl )
 }
 
 function open( dataUrl ) {
@@ -584,7 +580,7 @@ function open( dataUrl ) {
 }
 
 function display() {
-  var imgBuffer = exports.snapchatMinusTheChat( exports.displayCanvas, exports.displayCtx )
+  var imgBuffer = exports.snapchatMinusTheChatDataUrl( exports.displayCanvas, exports.displayCtx, 'image/png' )
   if ( imgBuffer ) {
     base.debugNow(2)
     // re-apply normal div functionality/visibility
@@ -608,6 +604,7 @@ function display() {
     return null
   }
 }
+
 function createSnapshotEle( parentEle ) {
   
   // create canvas to spread use as a mediator to tranfer single images from 
@@ -692,26 +689,32 @@ exports.loadStreams = function() {
   var pc = new peerConnection( { iceServers: [] } )
 
   // find out what sources we have available and start stream with default
-  MediaStreamTrack.getSources( function( srcs ) { /*global MediaStreamTrack*/
+  window.MediaStreamTrack.getSources( function( srcs ) {
+    
     for ( var idx = 0; idx < srcs.length; ++idx ) {
       var src = srcs[idx]
-      if ( src.kind === 'video' ) videoStreams.push( src )
+      if ( src.kind == 'video' ) videoStreams.push( src )
     }
-    if ( videoStreams.length ) {
-      if ( videoStreams.length > 1 ) {
-        // special case if we found more than one usable stream
-        createCycleStreamControl()
-      } else if ( cycleStreamControl !== null ) {
-        // otherwise try to remove control if it exists
-        controls.remove( cycleStreamControl )
-        cycleStreamControl = null
-      }
-      setStream( videoStreams[0] )
-    } else {
+    
+    
+    if ( videoStreams.length == 0 ) {
       exports.curStream = null
       log.debug( 'no video streams found.' )
+      return
     }
+    
+    if ( videoStreams.length > 1 ) {
+      // special case if we found more than one usable stream
+      createCycleStreamControl()
+    } else if ( cycleStreamControl !== null ) {
+      // otherwise try to remove control if it exists
+      controls.remove( cycleStreamControl )
+      cycleStreamControl = null
+    }
+    setStream( videoStreams[0] )
+    
   } )
+  
 }
 
 function setStream( src ) {
@@ -740,7 +743,8 @@ function setStream( src ) {
     } }, function( stream ) {
     exports.mainVideo.src = window.URL.createObjectURL( stream )
     src.stream = stream
-    exports.mainVideo.play()
+    //exports.mainVideo.play()
+    exports.mainVideo.pause()
     log.debug( 'stream ' + src.id + ' is up.' )
   }, function ( err ) { log.debug( err ) } )
 }

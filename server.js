@@ -3,9 +3,11 @@
 var http = require( 'http' )
 var cv = require( 'opencv' )
 var io = require( 'socket.io' )
-var express = require('express')
+var express = require( 'express' )
 
-var punkCounter = require( './punkCounter.js' )
+var punkCounter = require( './libs/punkCounter.js' )
+var snapshot = require( './libs/snapshot.js' )
+var faceBase = require( './libs/faceBase.js' )
 
 // define address and port
 var ip = process.env.IP
@@ -26,6 +28,10 @@ var io = io.listen( server )
 
 // keep track of when we gain or lose a user (and let everyone know)
 punkCounter.init()
+// gives us nice canvas/video snapshot capabilities for applications
+snapshot.init()
+// who knows what this does yet
+faceBase.init()
   
 // define socket io connection events
 var nsp = io.of( '/nsp' )
@@ -48,21 +54,10 @@ nsp.on( 'connection', function( socket ) {
     } )
     
     punkCounter.newCon( nsp, socket )
+    snapshot.newCon( nsp, socket )
+    faceBase.newCon( nsp, socket )
     
   }
-  
-  socket.on( 'getFace', function( data ) {
-    /*var imgBuf = new Buffer( data.buf.replace( /^data:image\/(png|jpg);base64,/, '' ), 'base64' )
-    cv.readImage( imgBuf, function( err, img ) {
-      if ( err ) throw err
-      if ( img.width() < 1 || img.height() < 1 ) throw new Error( 'Image has no size' )
-      img.detectObject( cv.FACE_CASCADE, {}, function( err, matches ) {
-        if ( err ) throw err
-        socket.emit( 'getFaceRes', { matches: matches } )
-      } )
-    } )*/
-    socket.emit( 'getFaceRes', { matches: [{x: 132, y: 106, width: 113, height: 113}] } )
-  } )
   
 } )
 

@@ -52,6 +52,9 @@ exports.debug = function( string ) {
   
   // it would be unfair to leave the old console out
   console.log( string )
+  //console.log( this.debug.caller.toString() )
+  //arguments.callee.caller.toString() // give source
+  
   
 }
 

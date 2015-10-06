@@ -9,7 +9,7 @@ var lis = null
 var ticks = 0
 var tic = null
 exports.fpss = null
-var updateEvery = 1 * 1000 // update fps counter every ***ms
+var updateEvery = 2 * 1000 // update fps counter every ***ms
 var fpsDisplayDiv = null
 
 
